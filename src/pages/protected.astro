@@ -1,27 +1,29 @@
 ---
-// import { firebase } from "@/firebase/config";
+import { firebase } from "@/firebase/config";
 import MainLayout from "@/layouts/MainLayout.astro";
 
-// const firebaseUser = firebase.auth.currentUser;
+const { user, isLoggedIn } = Astro.locals;
+
+if (!isLoggedIn || !user) {
+  return Astro.redirect("/login");
+}
+
+const { avatar, email, name } = user;
+
+const firebaseUser = firebase.auth.currentUser;
 // //console.log(firebaseUser);
 
 // if (firebaseUser === null) {
 //   return Astro.redirect("/login");
 // }
 
-// await firebaseUser.reload();
+await firebaseUser?.reload();
+const { emailVerified } = firebaseUser!;
 
 // const { displayName, email, emailVerified, photoURL } = firebaseUser;
 
 // const name = displayName ?? "No display name";
 // console.log(photoURL);
-
-const { user, isLoggedIn } = Astro.locals;
-if (!isLoggedIn || !user) {
-  return Astro.redirect("/login");
-}
-
-const { avatar, email, emailVerified, name } = user;
 ---
 
 <MainLayout>
